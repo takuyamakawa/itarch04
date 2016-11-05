@@ -41,7 +41,8 @@ public class MainActivity extends Activity {
         btn = (Button) findViewById(R.id.start);
 
         res = (TextView) findViewById(R.id.calcResult);
-
+        res.setTextSize(36);
+        
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

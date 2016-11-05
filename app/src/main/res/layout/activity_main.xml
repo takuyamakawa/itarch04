@@ -16,34 +16,21 @@
         android:text="Hello World!"
         android:id="@+id/textView" />
 
-    <Button
-        android:text="開始"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:id="@+id/start" />
-
-    <Button
-        android:text="終了"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/start"
-        android:layout_alignLeft="@+id/start"
-        android:layout_alignStart="@+id/start"
-        android:layout_marginTop="71dp"
-        android:id="@+id/stop" />
-
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="69dp"
+        android:layout_marginTop="115dp"
         android:id="@+id/calcResult"
-        android:layout_below="@+id/stop"
-        android:layout_alignRight="@+id/stop"
-        android:layout_alignEnd="@+id/stop"
-        android:layout_alignLeft="@+id/stop"
-        android:layout_alignStart="@+id/stop" />
+        android:layout_below="@+id/start"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="計算 / 停止"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/start"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
