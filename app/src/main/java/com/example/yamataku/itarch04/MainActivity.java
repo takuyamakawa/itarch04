@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -18,6 +22,8 @@ public class MainActivity extends Activity {
     IMyAidlInterface aidl;
     TextView res;
     Button btn;
+    private  int result = 1;
+    private  int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +34,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // SubServiceにbindする
-        Intent i = new Intent(this, com.example.yamataku.itarch04.SubService.class);
+        final Intent i = new Intent(this, com.example.yamataku.itarch04.SubService.class);
         i.setAction(IMyAidlInterface.class.getName());
         bindService(i, serviceConnection, BIND_AUTO_CREATE);
 
         btn = (Button) findViewById(R.id.start);
-        //btn.setOnClickListener(this);//リスナの登録
-
-        //btn  = (Button) findViewById(R.id.stop);
-        //btn.setOnClickListener(this);//リスナの登録
 
         res = (TextView) findViewById(R.id.calcResult);
 
@@ -47,18 +49,31 @@ public class MainActivity extends Activity {
                 switch(v.getId()){
 
                     case R.id.start://startServiceでサービスを起動
-                        //TextView res = (TextView) findViewById(R.id.calcResult);
 
-                        int result = 0;
-                        try {
-                            result = aidl.add(1, 2);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                        res.setText(String.valueOf(result));
+                        Timer timer = new Timer(true);
+                        final Handler handler = new Handler();
+                        timer.schedule(
+                                new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        handler.post( new Runnable(){
+                                            public void run(){
+                                                try {
+                                                    result = aidl.add(result, result);
+                                                } catch (RemoteException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                res.setText(String.valueOf(result));
+                                            }
+                                        });
+                                    }
+                                }, 0, 1000   //開始遅延(何ミリ秒後に開始するか)と、周期(何ミリ秒ごとに実行するか)
+                        );
 
                         break;
 //                    case R.id.stop://stopServiceでサービスの終了
+//                        result = 0;
+//                        res.setText(String.valueOf(result));
 //                        stopService(new Intent(MainActivity.this, SubService.class));
 //                        break;
                 }
@@ -92,19 +107,5 @@ public class MainActivity extends Activity {
             aidl = null;
         }
 
-//        private View.OnClickListener btnListener = new View.OnClickListener() {
-//            public void onClick(View v) {
-//
-//                switch(v.getId()){
-//
-//                    case R.id.start://startServiceでサービスを起動
-//                        startService(new Intent(MainActivity.this, SubService.class));
-//                        break;
-//                    case R.id.stop://stopServiceでサービスの終了
-//                        stopService(new Intent(MainActivity.this, SubService.class));
-//                        break;
-//                }
-//            }
-//        };
     };
 }
