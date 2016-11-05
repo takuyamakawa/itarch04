@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 
     IMyAidlInterface aidl;
     TextView res;
@@ -39,10 +39,9 @@ public class MainActivity extends Activity {
         bindService(i, serviceConnection, BIND_AUTO_CREATE);
 
         btn = (Button) findViewById(R.id.start);
-
         res = (TextView) findViewById(R.id.calcResult);
         res.setTextSize(36);
-        
+
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -60,7 +59,13 @@ public class MainActivity extends Activity {
                                         handler.post( new Runnable(){
                                             public void run(){
                                                 try {
-                                                    result = aidl.add(result, result);
+                                                    if(flag == 0) {
+                                                        result = aidl.add(result, result);
+                                                        if(result ==1024) flag = 1;
+                                                    }else {
+                                                        result = aidl.half(result, 2);
+                                                        if(result == 2) flag = 0;
+                                                    }
                                                 } catch (RemoteException e) {
                                                     e.printStackTrace();
                                                 }
@@ -72,11 +77,6 @@ public class MainActivity extends Activity {
                         );
 
                         break;
-//                    case R.id.stop://stopServiceでサービスの終了
-//                        result = 0;
-//                        res.setText(String.valueOf(result));
-//                        stopService(new Intent(MainActivity.this, SubService.class));
-//                        break;
                 }
             }
         });

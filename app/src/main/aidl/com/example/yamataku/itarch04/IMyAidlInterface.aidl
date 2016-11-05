@@ -5,5 +5,6 @@ package com.example.yamataku.itarch04;
 
 interface IMyAidlInterface {
     int add(int lhs, int rhs);
+    int half(int lhs, int rhs);
     }
 

@@ -25,5 +25,9 @@ public class SubService extends Service{
         public int add(int lhs, int rhs) throws RemoteException {
             return lhs + rhs;
         }
+
+        public int half(int lhs, int rhs) throws RemoteException {
+            return lhs / rhs;
+        }
     };
 }
